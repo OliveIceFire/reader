@@ -22,11 +22,16 @@
     <!--    开启注解模式-->
     <mvc:annotation-driven>
         <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="com.example.reader.config.CustomObjectMapper"/>
+                </property>
+            </bean>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes">
                     <list>
                         <value>application/json;charset=utf-8</value>
-                        <!--                        后端返回的所有数据都是json-->
+                        <!--后端返回的所有数据都是json-->
                     </list>
                 </property>
             </bean>
