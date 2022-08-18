@@ -31,7 +31,7 @@
                 <property name="supportedMediaTypes">
                     <list>
                         <value>application/json;charset=utf-8</value>
-                        <!--                        后端返回的所有数据都是json-->
+                        <!--后端返回的所有数据都是json-->
                     </list>
                 </property>
             </bean>
@@ -82,4 +82,20 @@
     </bean>
     <!--    开启事务注解模式-->
 <!--    <tx:annotation-driven transaction-manager="transactionManager"/>-->
+
+    <bean id="kaptchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+        <property name="config">
+            <bean class="com.google.code.kaptcha.util.Config">
+                <constructor-arg>
+                    <props>
+                        <prop key="kaptcha.border">no</prop>
+                        <prop key="kaptcha.image.width">120</prop>
+                        <prop key="kaptcha.textproducer.font.color">blue</prop>
+                        <prop key="kaptcha.textproducer.font.size">40</prop>
+                        <prop key="kaptcha.textproducer.char.length">4</prop>
+                    </props>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
 </beans>

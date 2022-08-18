@@ -38,10 +38,10 @@
             </a>
         </template>
         <template #right>
-            <template v-if = "state.isLogin">
+            <template v-if="state.isLogin">
                 <img src="/images/user_icon.png" style="height:30px">{{state.member.nickname}}
             </template>
-            <template v-if = "!state.isLogin">
+            <template v-if="!state.isLogin">
                 <img src="/images/user_icon.png" style="height: 30px">
                 登录
             </template>
@@ -60,16 +60,22 @@
             <div style="font-size: 16px;margin-top:5px;">{{book.subTitle}}</div>
             <div style="padding:10px">
                 <template v-if="state.readState == -1">
-                    <van-button size="small" icon="like-o" type="default" style="margin-right: 10px" @click="updateReadState(1)">想看</van-button>
+                    <van-button size="small" icon="like-o" type="default" style="margin-right: 10px"
+                                @click="updateReadState(1)">想看
+                    </van-button>
                     <van-button size="small" icon="passed" type="default" @click="updateReadState(2)">看过</van-button>
                 </template>
                 <template v-if="state.readState == 1">
-                    <van-button size="small" icon="like" type="success" style="margin-right: 10px" @click="updateReadState(1)">想看</van-button>
+                    <van-button size="small" icon="like" type="success" style="margin-right: 10px"
+                                @click="updateReadState(1)">想看
+                    </van-button>
                     <van-button size="small" icon="passed" type="default" @click="updateReadState(2)">看过</van-button>
                 </template>
 
                 <template v-if="state.readState == 2">
-                    <van-button size="small" icon="like-o" type="default" style="margin-right: 10px" @click="updateReadState(1)">想看</van-button>
+                    <van-button size="small" icon="like-o" type="default" style="margin-right: 10px"
+                                @click="updateReadState(1)">想看
+                    </van-button>
                     <van-button size="small" icon="checked" type="success" @click="updateReadState(2)">看过</van-button>
                 </template>
             </div>
@@ -90,21 +96,23 @@
     </van-nav-bar>
     <!--短评列表,通过迭代EvaluationList实现-->
     <template v-for="evaluation,index in evaluationList">
-    <div style="border-bottom: 1px solid #cccccc">
-        <div style="padding: 10px;">
-            <!-- 短评创建时间 -->
-            <span style="margin-right: 20px">{{evaluation.ct}}</span>
-            <!-- 用户昵称 -->
-            <span style="margin-right: 20px">{{evaluation.nickname}}</span>
-            <!-- 星型分数 -->
-            <van-rate v-model="evaluation.score" color="#ffd21e" void-icon="star" readonly allow-half></van-rate>
-            <van-button icon="like-o" @click="enjoy(index)" type="success" size="small" style="width:40px;float:right" >{{evaluation.enjoy}}</van-button>
+        <div style="border-bottom: 1px solid #cccccc">
+            <div style="padding: 10px;">
+                <!-- 短评创建时间 -->
+                <span style="margin-right: 20px">{{evaluation.ct}}</span>
+                <!-- 用户昵称 -->
+                <span style="margin-right: 20px">{{evaluation.nickname}}</span>
+                <!-- 星型分数 -->
+                <van-rate v-model="evaluation.score" color="#ffd21e" void-icon="star" readonly allow-half></van-rate>
+                <van-button icon="like-o" @click="enjoy(index)" type="success" size="small"
+                            style="width:40px;float:right">{{evaluation.enjoy}}
+                </van-button>
+            </div>
+            <!-- 评论内容 -->
+            <div style="padding: 10px;">
+                {{evaluation.content}}
+            </div>
         </div>
-        <!-- 评论内容 -->
-        <div style="padding: 10px;">
-            {{evaluation.content}}
-        </div>
-    </div>
     </template>
     <div style="margin-bottom: 50px">
     </div>
@@ -112,12 +120,12 @@
     <van-action-sheet v-model:show="state.dialogVisible" :title="book.bookName">
         <van-form ref="evaluationForm">
             <van-cell-group inset>
-                <van-rate v-model="form.score" color="#ffd21e" void-icon="star" style="padding: 16px" ></van-rate>
+                <van-rate v-model="form.score" color="#ffd21e" void-icon="star" style="padding: 16px"></van-rate>
                 <van-field
                         v-model="form.content"
                         name="content"
                         placeholder="这里输入评论内容"
-                        autocomplete = "off"
+                        autocomplete="off"
                         :rules="[{ required: true, message: '请输入评论内容' }]"
                 />
             </van-cell-group>
@@ -132,10 +140,11 @@
 </div>
 <script>
     //日期格式化函数
-    function formatDate(time){
+    function formatDate(time) {
         var newDate = new Date(time);
         return (newDate.getMonth() + 1) + "-" + newDate.getDate();
     }
+
     //获取查询字符串函数
     function getQueryString(name) {
         var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -145,187 +154,194 @@
         }
         return null;
     }
+
     //提示"需要登录"对话框
-    function warnLogin(text){
+    function warnLogin(text) {
         vant.Dialog.confirm({
             title: text,
             confirmButtonText: "去登录",
             cancelButtonText: "关闭"
         })
-        .then(() => {
-            window.location.href = "/login.html";
-        })
+            .then(() => {
+                window.location.href = "/login.html";
+            })
     }
 
     const main = {
-        data() {
-            return {
-                state : { //页面状态
-                    isLogin: false, //是否登录
-                    member:{}, //当前登录会员数据
-                    readState : -1, //当前会员阅读状态 -1:无数据 1:想看 2:看过
-                    dialogVisible : false //短评对话框是否显示
-                },
-                book: {
-                },
-                evaluationList:[], //短评列表
-                form: { //短评表单数据
-                    score:5,
-                    content:""
+            data() {
+                return {
+                    state: { //页面状态
+                        isLogin: false, //是否登录
+                        member: {}, //当前登录会员数据
+                        readState: -1, //当前会员阅读状态 -1:无数据 1:想看 2:看过
+                        dialogVisible: false //短评对话框是否显示
+                    },
+                    book: {},
+                    evaluationList: [], //短评列表
+                    form: { //短评表单数据
+                        score: 5,
+                        content: ""
+                    }
                 }
             }
-        }
-        , methods: {
-            showEvaluationList: function(bookId , isFlush){
-                const objApp = this;
-                axios.get("/api/evaluation/list?bookId=" + bookId)
-                    .then(function(response){
-                        const json = response.data;
-                        if(json.code == "0"){
-                            if(isFlush){
-                                objApp.evaluationList.splice(0, objApp.evaluationList.length);
+            , methods: {
+                showEvaluationList: function (bookId, isFlush) {
+                    const objApp = this;
+                    axios.get("/api/evaluation/list?bookId=" + bookId)
+                        .then(function (response) {
+                            const json = response.data;
+                            if (json.code === "0") {
+                                if (isFlush) {
+                                    objApp.evaluationList.splice(0, objApp.evaluationList.length);
+                                }
+                                const list = json.data.list;
+                                list.forEach(function (item) {
+                                    item.ct = formatDate(item.create_time);
+                                    objApp.evaluationList.push(item);
+                                })
+                            } else {
+                                console.error(json);
                             }
-                            const list = json.data.list;
-                            list.forEach(function(item){
-                                item.ct = formatDate(item.create_time);
-                                objApp.evaluationList.push(item);
-                            })
-                        }else{
-                            console.error(json);
-                        }
-                    });
-            }
-            //显示短评对话框
-            ,showDialog:function(){
-                const objApp = this;
-                if(!objApp.state.isLogin){
-                    warnLogin("登录后才能进行评论哦");
-                    return;
+                        });
                 }
-                this.state.dialogVisible = true;
-            }
-            ,clickRight:function(){
-                //点击"登录"按钮跳转到登录页
-                if(!this.state.isLogin){
-                    window.location.href = "/login.html";
+                //显示短评对话框
+                , showDialog: function () {
+                    const objApp = this;
+                    if (!objApp.state.isLogin) {
+                        warnLogin("登录后才能进行评论哦");
+                        return;
+                    }
+                    this.state.dialogVisible = true;
                 }
-            }
-            ,updateReadState:function(readState){
-                //更新阅读状态
-                const memberId = sessionStorage.mid;
-                const bookId = getQueryString("bid");
-                const objApp = this;
-                if(!objApp.state.isLogin){
-                    warnLogin("登录后才能更新阅读状态哦");
-                    return;
+                , clickRight: function () {
+                    //点击"登录"按钮跳转到登录页
+                    if (!this.state.isLogin) {
+                        window.location.href = "/login.html";
+                    }
                 }
-                const params = new URLSearchParams();
-                params.append("memberId", memberId);
-                params.append("bookId", bookId);
-                params.append("readState", readState);
-                axios.post("/api/member/update_read_state",params)
-                    .then(function(response){
-                        const json = response.data;
-                        if(json.code == "0"){
-                            objApp.state.readState = json.data.readState.readState;
-                        }else{
-                            console.error(json);
-                        }
-                    })
-
-            }
-            ,onSubmit: function (formName) {
-                //提交短评功能
-                const form = this.$refs[formName];
-                const objApp = this;
-                const memberId = sessionStorage.mid;
-                const bookId = getQueryString("bid");
-                form.validate().then(function(){
+                , updateReadState: function (readState) {
+                    //更新阅读状态
+                    const memberId = sessionStorage.mid;
+                    const bookId = getQueryString("bid");
+                    const objApp = this;
+                    if (!objApp.state.isLogin) {
+                        warnLogin("登录后才能更新阅读状态哦");
+                        return;
+                    }
                     const params = new URLSearchParams();
                     params.append("memberId", memberId);
                     params.append("bookId", bookId);
-                    params.append("score", objApp.form.score);
-                    params.append("content", objApp.form.content);
-                    axios.post("/api/member/evaluate" , params)
-                        .then(function(response){
+                    params.append("readState", readState);
+                    axios.post("/api/member/updateReadState", params)
+                        .then(function (response) {
                             const json = response.data;
-                            if(json.code == "0"){
-                                objApp.state.dialogVisible = false;
-                                objApp.form.score = 5;
-                                objApp.form.content = "";
-                                objApp.showEvaluationList(bookId , true);
-                            }else{
+                            if (json.code === "0") {
+                                objApp.state.readState = json.data.readState.readState;
+                            } else {
                                 console.error(json);
                             }
                         })
-                }).catch(function(e){console.debug("表单验证失败",e)});
-            }
-            ,enjoy : function(index){
-                //点赞功能
-                const memberId = sessionStorage.mid;
-                const objApp = this;
-                if(!objApp.state.isLogin){
-                    warnLogin("登录后才能为短评点赞哦");
-                    return;
+
                 }
-                const evaluation = objApp.evaluationList[index];
-                const params = new URLSearchParams();
-                params.append("evaluationId", evaluation.evaluation_id);
-                axios.post("/api/member/enjoy" , params)
-                    .then(function(response){
-                        const json = response.data;
-                        if(json.code == "0"){
-                            evaluation.enjoy = json.data.evaluation.enjoy;
-                        }else{
-                            console.error(json);
-                        }
-                    })
-            }
-        }
-        , mounted() {
-            //初始化后数据操作
-            const bookId = getQueryString("bid");
-            const objApp = this;
-            const uri = "/api/book/id/" + bookId;
-            axios.get(uri).then(function(response){
-                const json = response.data;
-                if(json.code == "0"){
-                    objApp.book = json.data.book;
-                }else{
-                    console.error(json);
+                , onSubmit: function (formName) {
+                    //提交短评功能
+                    const form = this.$refs[formName];
+                    const objApp = this;
+                    const memberId = sessionStorage.mid;
+                    const bookId = getQueryString("bid");
+
+                    form.validate().then(function () {
+                        const params = new URLSearchParams();
+                        params.append("memberId", memberId);
+                        params.append("bookId", bookId);
+                        params.append("score", objApp.form.score);
+                        params.append("content", objApp.form.content);
+                        axios.post("/api/member/evaluate", params)
+                            .then(function (response) {
+                                const json = response.data;
+                                if (json.code === "0") {
+                                    objApp.state.dialogVisible = false;
+                                    objApp.form.score = 5;
+                                    objApp.form.content = "";
+                                    objApp.showEvaluationList(bookId, true);
+                                } else {
+                                    console.error(json);
+                                }
+                            })
+                    }).catch(function (e) {
+                        console.debug("表单验证失败", e)
+                    });
                 }
-            });
-            objApp.showEvaluationList(bookId , false);
-            const mid = sessionStorage.mid;
-            if(mid != null){
-                axios.get("/api/member/select_by_id?memberId=" + mid)
-                    .then(function(response){
-                        const json = response.data;
-                        if(json.code == "0"){
-                            objApp.state.isLogin = true;
-                            objApp.state.member = json.data.member;
-                        }else{
-                            console.error(json);
-                        }
-                    })
-                axios.get("/api/member/select_read_state?memberId=" + mid + "&bookId=" + bookId)
-                    .then(function (response){
-                        const json = response.data;
-                        if(json.code == "0"){
-                            if(json.data.readState != null){
-                                objApp.state.readState = json.data.readState.readState;
-                            }else{
-                                objApp.state.readState = -1;
+                , enjoy: function (index) {
+
+                    //点赞功能
+                    const memberId = sessionStorage.mid;
+                    const objApp = this;
+                    if (!objApp.state.isLogin) {
+                        warnLogin("登录后才能为短评点赞哦");
+                        return;
+                    }
+                    const evaluation = objApp.evaluationList[index];
+                    const params = new URLSearchParams();
+                    params.append("evaluationId", evaluation.evaluation_id);
+                    axios.post("/api/member/enjoy", params)
+                        .then(function (response) {
+                            const json = response.data;
+                            if (json.code === "0") {
+                                evaluation.enjoy = json.data.evaluation.enjoy;
+                            } else {
+                                console.error(json);
                             }
-                        }else{
-                            console.error(json);
-                        }
-                    })
+                        })
+                }
             }
 
+            , mounted
+                () {
+                //初始化后数据操作
+                const bookId = getQueryString("bid");
+                const objApp = this;
+                const uri = "/api/book/id/" + bookId;
+                axios.get(uri).then(function (response) {
+                    const json = response.data;
+                    if (json.code === "0") {
+                        objApp.book = json.data.book;
+                    } else {
+                        console.error(json);
+                    }
+                });
+                objApp.showEvaluationList(bookId, false);
+                const mid = sessionStorage.mid;
+                if (mid != null) {
+                    axios.get("/api/member/selectById?memberId=" + mid)
+                        .then(function (response) {
+                            const json = response.data;
+                            if (json.code === "0") {
+                                objApp.state.isLogin = true;
+                                objApp.state.member = json.data.member;
+                            } else {
+                                console.error(json);
+                            }
+                        })
+                    axios.get("/api/member/selectReadState?memberId=" + mid + "&bookId=" + bookId)
+                        .then(function (response) {
+                            const json = response.data;
+                            if (json.code === "0") {
+                                if (json.data.readState != null) {
+                                    objApp.state.readState = json.data.readState.readState;
+                                } else {
+                                    objApp.state.readState = -1;
+                                }
+                            } else {
+                                console.error(json);
+                            }
+                        })
+                }
 
+
+            }
         }
-    };
+    ;
     const app = Vue.createApp(main);
     app.use(vant);
     app.use(vant.Lazyload);

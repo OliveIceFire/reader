@@ -218,7 +218,7 @@
                 });
             const mid = sessionStorage.mid;
             if (mid != null) {
-                axios.get("/api/member/select_by_id?memberId=" + mid)
+                axios.get("/api/member/selectById?memberId=" + mid)
                     .then(function (response) {
                         const json = response.data;
                         if (json.code == "0") {
