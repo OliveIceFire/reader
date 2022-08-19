@@ -44,5 +44,11 @@ public class BookServiceImpl implements BookService {
         return bookMapper.selectById(bookId);
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateScore() {
+        bookMapper.updateScore();
+    }
+
 
 }

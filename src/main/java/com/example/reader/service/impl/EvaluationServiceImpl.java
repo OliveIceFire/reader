@@ -25,6 +25,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Evaluation evaluate(Long memberId, Long bookId, Integer score, String content) {
         Evaluation evaluation = new Evaluation();
         evaluation.setMemberId(memberId);
@@ -39,6 +40,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Evaluation enjoy(Long evaluationId) {
         Evaluation evaluation = evaluationMapper.selectById(evaluationId);
         evaluation.setEnjoy(evaluation.getEnjoy() + 1);
