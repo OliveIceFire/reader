@@ -56,3 +56,4 @@ out/
 *.diff
 *.patch
 *.tmp
+/.idea/
